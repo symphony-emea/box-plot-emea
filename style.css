@@ -22,12 +22,13 @@ body {
 	align-items: center;
 	display: flex;
 	text-align: center;
+	word-spacing: 0.5rem;
 }
 
 .heading h1 {
 	width: 100%;
 	font-family: 'Merriweather Sans', sans-serif;
-	font-weight: 100;
+	font-weight: 600;
 }
 
 .container {
@@ -46,18 +47,22 @@ body {
 
 .week-group {
 	display: flex;
-	/* flex-direction: row; */
+	justify-content: center;
 	align-items: center;
-	/* justify-content: center; */
+}
+
+.main-tray {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 	overflow: auto;
-	/* width: 75%; */
-	height: auto;
-	/* gap: 2rem; */
+	max-width: 95%;
 }
 
 .week-group .myChart {
 	padding: 1rem 0;
 	border-right: 1px solid black;
+	max-width: 100%;
 }
 
 .wrapper {
@@ -102,7 +107,8 @@ input[type='checkbox'] {
 	overflow: auto;
 	max-height: 200px;
 	padding: 5px 0 0px 0;
-	background-color: whitesmoke;
+	background-color: #fff;
+	border: 1px solid #ccc;
 }
 
 .active {
@@ -111,8 +117,13 @@ input[type='checkbox'] {
 
 .btn {
 	width: 100%;
-	height: 120%;
+	height: 100%;
 	font-size: 1rem;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 5px 10px;
+	cursor: pointer;
 }
 
 .tables {
@@ -134,19 +145,19 @@ input[type='checkbox'] {
 .tables .table td,
 .tables .table th {
 	white-space: nowrap;
-	border: 1px solid #ddd;
-	padding: 0.2rem 1rem;
-	font-size: 0.8rem;
+	border: 0.1px solid #ddd;
+	padding: 0.1rem 0.6rem;
+	font-size: 0.7rem;
 }
 
 .tables .table th {
 	font-family: 'Merriweather Sans', sans-serif;
-	border: 1px solid #ddd;
 	padding: 0.5rem 1rem;
 }
 
 ::-webkit-scrollbar {
 	width: 5px;
+	height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -154,9 +165,9 @@ input[type='checkbox'] {
 }
 
 ::-webkit-scrollbar-thumb {
-	background-color: #888;
+	background-color: #ccc;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	background-color: #555;
+	background-color: #666;
 }

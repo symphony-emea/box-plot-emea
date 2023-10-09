@@ -40,26 +40,26 @@ function addValuesToBtn({ arr: arr, btn: btn, div_class: div_class, div: div }) 
     });
 
     btn.addEventListener('click', (e) => {
-        let check = document.querySelector(div_class + " .checkboxes");
+        let check = document.querySelector('.' + div_class + " .checkboxes");
         check.classList.toggle('active');
     });
 
     // btn.addEventListener('mouseover', (e) => {
-    //     let check = document.querySelector(div_class + " .checkboxes");
+    //     let check = document.querySelector('.' + div_class + " .checkboxes");
     //     check.classList.add('active');
     // });
 
-    // document.querySelector(div_class + " .checkboxes").addEventListener('mouseleave', (e) => {
-    //     let check = document.querySelector(div_class + " .checkboxes");
+    // document.querySelector('.' + div_class + " .checkboxes").addEventListener('mouseleave', (e) => {
+    //     let check = document.querySelector('.' + div_class + " .checkboxes");
     //     check.classList.remove('active');
     // });
 
-    var checkboxUnTicked = document.querySelectorAll(div_class + ' #Categories .ckkBox.val');
-    var checkBoxAll = document.querySelector(div_class + ' .all');
+    var checkboxUnTicked = document.querySelectorAll('.' + div_class + ' #Categories .ckkBox.val');
+    var checkBoxAll = document.querySelector('.' + div_class + ' .all');
 
     for (let i = 0; i < checkboxUnTicked.length; i++) {
         checkboxUnTicked[i].addEventListener('click', function () {
-            const select = document.querySelectorAll(div_class + ' #Categories .ckkBox.val:checked')
+            const select = document.querySelectorAll('.' + div_class + ' #Categories .ckkBox.val:checked')
             if (select.length == checkboxUnTicked.length) {
                 checkBoxAll.checked = true;
             } else checkBoxAll.checked = false;
@@ -104,43 +104,44 @@ const tables = document.querySelector('.tables');
 
 //-------------------------------------------------------------------------------------------------------------//
 fetch("./data.csv").then(dataA => dataA.text()).then(dataA => {
-    const headers = dataA.trim().split("\n").shift().split(",");
     const dataArr = dataA.trim().split("\n").map(row => row.replace("\r", "").split(",")).slice(1);
-    var filterArr = dataArr;
+    let filterArr = filterArrForOptions = dataArr;
     console.log([...new Set(dataArr.map(row => row.length))]);
 
-    function EventAndFilter(rowNumber, div_class, div, btn) {
-        let arr = [...new Set(filterArr.map(row => row[rowNumber]))];
+    function addAndUpdate(rowNumber, div_class, div, btn) {
+        let arr = [...new Set(filterArrForOptions.map(row => row[rowNumber]))];
         addValuesToBtn({ arr: arr, btn: btn, div_class: div_class, div: div });
         btn.addEventListener('click', (e) => {
-            let event = document.querySelectorAll(div_class + ' .ckkBox.val:checked');
+            let event = document.querySelectorAll('.' + div_class + ' .ckkBox.val:checked');
             let eventArr = [];
             event.forEach((s) => eventArr.push(s.value));
             if (eventArr.length >= 1) {
-                let temp = filterArr.filter(row => eventArr.includes(row[rowNumber]));
-                filterArr = temp;
+                let temp = filterArrForOptions.filter(row => eventArr.includes(row[rowNumber]));
+                filterArrForOptions = temp;
             }
         });
     }
 
-    EventAndFilter(1, '.weeks', week_div, weekBtn);
-    EventAndFilter(8, '.price-seg', price_seg_div, price_segBtn);
-    EventAndFilter(4, '.vendor', vendor_div, vendorBtn);
-    EventAndFilter(11, '.tariff-seg', tariff_seg_div, tariff_segBtn);
-    EventAndFilter(10, '.tariff-type', tariff_type_div, tariff_typeBtn);
+    addAndUpdate(1, 'weeks', week_div, weekBtn);
+    addAndUpdate(8, 'price-seg', price_seg_div, price_segBtn);
+    addAndUpdate(4, 'vendor', vendor_div, vendorBtn);
+    addAndUpdate(11, 'tariff-seg', tariff_seg_div, tariff_segBtn);
+    addAndUpdate(10, 'tariff-type', tariff_type_div, tariff_typeBtn);
 
-    let tcoArr = ['Calculated TCO', 'Calculated TCO TI'];
-    addValuesToBtn({ arr: tcoArr, btn: tcoBtn, div_class: '.tco', div: tco_div });
+    // let tcoArr = ['Calculated TCO', 'Calculated TCO TI'];
+    let tcoArr = [];
+    addValuesToBtn({ arr: tcoArr, btn: tcoBtn, div_class: 'tco', div: tco_div });
 
-    let year = [...new Set(filterArr.map(row => row[0].split(" ")[2]))];
-    addValuesToBtn({ arr: year, btn: yearBtn, div_class: '.year', div: year_div });
+    let year = [...new Set(filterArrForOptions.map(row => row[0].split(" ")[2]))];
+    addValuesToBtn({ arr: year, btn: yearBtn, div_class: 'year', div: year_div });
+
     yearBtn.addEventListener('click', (e) => {
         let year = document.querySelectorAll('.year .ckkBox.val:checked');
         let yearArr = [];
         year.forEach((s) => yearArr.push(s.value));
         if (yearArr.length >= 1) {
-            let temp = filterArr.filter(row => yearArr.includes(row[0].split(" ")[2]));
-            filterArr = temp;
+            let temp = filterArrForOptions.filter(row => yearArr.includes(row[0].split(" ")[2]));
+            filterArrForOptions = temp;
         }
     });
 
@@ -180,13 +181,19 @@ fetch("./data.csv").then(dataA => dataA.text()).then(dataA => {
 
         container_chart.innerHTML = '';
         let colorForYear = ['#e8b206', '#1c9e4b', '#e84b1c', '#1c4be8', '#e81c9e', '#4be81c', '#9e1ce8', '#1ce89e', '#4b1ce8', '#e89e1c', '#1ce84b', '#e84be1', '#9e4be8', '#4be89e', '#e81c4b', '#1c9ee8', '#e89e4b', '#1c4be8', '#e81c9e', '#4be81c', '#9e1ce8', '#1ce89e', '#4b1ce8', '#e89e1c', '#1ce84b', '#e84be1', '#9e4be8', '#4be89e', '#e81c4b', '#1c9ee8', '#e89e4b', '#1c4be8', '#e81c9e', '#4be81c', '#9e1ce8', '#1ce89e', '#4b1ce8', '#e89e1c', '#1ce84b', '#e84be1', '#9e4be8', '#4be89e', '#e81c4b', '#1c9ee8', '#e89e4b', '#1c4be8', '#e81c9e', '#4be81c', '#9e1ce8', '#1ce89e', '#4b1ce8', '#e89e1c', '#1ce84b', '#e84be1', '#9e4be8', '#4be89e', '#e81c4b', '#1c9ee8', '#e89e4b', '#1c4be8', '#e81c9e', '#4be81c', '#9e1ce8', '#1ce89e', '#4b1ce8', '#e89e1c', '#1ce84b', '#e84be1', '#9e4be8', '#4be89e', '#e81c4b', '#1c9ee8', '#e89e4b', '#1c4be8', '#e81c9e', '#4be81c', '#9e1ce8',];
+
         yearCheckedArr.forEach((year, indexYear) => {
             const div_outer = document.createElement('div');
             const h4 = document.createElement('h4');
             h4.innerHTML = year;
             div_outer.appendChild(h4);
             div_outer.className = 'week-group';
+
+            const main_tray = document.createElement('div');
+            main_tray.className = 'main-tray';
+            div_outer.appendChild(main_tray);
             container_chart.appendChild(div_outer);
+
             weekCheckedArr.forEach((week, index) => {
                 let tco = tcoCheckedArr[0] == 'Calculated TCO' ? 18 : 19;
                 let device_name = [...new Set(filteredData.map(row => row[6]))];
@@ -195,7 +202,7 @@ fetch("./data.csv").then(dataA => dataA.text()).then(dataA => {
                 const span = document.createElement('span');
                 span.id = `myChart${year}${week}`;
                 div_inner.appendChild(span);
-                div_outer.appendChild(div_inner);
+                main_tray.appendChild(div_inner);
 
                 let data = [];
                 device_name.forEach((device) => {
@@ -208,6 +215,7 @@ fetch("./data.csv").then(dataA => dataA.text()).then(dataA => {
                         marker: {
                             color: colorForYear[indexYear],
                         },
+                        // hoverinfo: 'name',
                     };
                     data.push(trace);
                 });
@@ -270,6 +278,7 @@ fetch("./data.csv").then(dataA => dataA.text()).then(dataA => {
             table_data['Effective Price'].push(finalRow[0][22]);
             table_data['Effective Price TI'].push(finalRow[0][23]);
         });
+
         // console.log(table_data);
 
         table.innerHTML = '';
